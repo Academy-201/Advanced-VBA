@@ -1,0 +1,6 @@
+Public Sub cleanCombo()
+fixDates
+fixTimes
+fixColWidth
+removeEmptyColumns
+End Sub
