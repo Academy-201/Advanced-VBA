@@ -1,0 +1,22 @@
+Public Sub fixDates()
+Dim lCol As Long
+'Dim colNum As Long
+Dim colRng As Range
+Dim cell As Variant
+
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+Set colRng = Range(Cells(1, 1), Cells(1, lCol))
+
+For Each cell In colRng
+    If cell Like "*Date*" Or cell Like "*date*" Then
+        cell.EntireColumn.NumberFormat = "mm/dd/yyyy"
+    End If
+Next cell
+
+'For colNum = 1 To lCol
+'    If Cells(1, colNum).Value Like "*Date*" Or Cells(1, colNum).Value Like "*date*" Then
+'        Columns(colNum).NumberFormat = "mm/dd/yyyy"
+'    End If
+'Next colNum
+
+End Sub
