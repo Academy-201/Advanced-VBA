@@ -1,0 +1,42 @@
+Public Sub fixDatesComplex()
+Dim lCol As Long
+'Dim colNum As Long
+'Dim header As String
+'Dim headerArr As Variant
+Dim isInArray As Boolean
+'Dim arrNum As Long
+
+Dim outerHeader As Variant
+Dim innerHeader As Variant
+Dim headerArr1 As Variant
+Dim headerArr2 As Range
+
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+headerArr1 = Array("dat", "purchdt", "holiday", "vacastart", "vacaend")
+Set headerArr2 = Range(Cells(1, 1), Cells(1, lCol))
+
+'For colNum = 1 To lCol
+For Each outerHeader In headerArr2
+    isInArray = False
+    'header = Cells(1, colNum).Value
+    For Each innerHeader In headerArr1
+        If InStr(LCase(outerHeader), innerHeader) Then
+            isInArray = True
+            Exit For
+        End If
+    Next innerHeader
+    
+'    For arrNum = LBound(headerArr) To UBound(headerArr)
+'        'If headerArr(arrNum) = header Then
+'        If InStr(LCase(header), headerArr(arrNum)) Then
+'            isInArray = True
+'            Exit For
+'        End If
+'    Next arrNum
+    
+    If isInArray = True Then
+        outerHeader.EntireColumn.NumberFormat = "mm/dd/yyyy"
+    End If
+Next outerHeader
+
+End Sub
