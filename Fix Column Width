@@ -1,0 +1,22 @@
+Public Sub fixColWidth()
+Dim lCol As Long
+'Dim colNum As Long
+Dim colRng As Range
+Dim cell As Variant
+
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+Cells.EntireColumn.AutoFit
+Set colRng = Range(Cells(1, 1), Cells(1, lCol))
+
+For Each cell In colRng
+    If cell.ColumnWidth > 18 Then
+        cell.EntireColumn.ColumnWidth = 18
+    End If
+Next cell
+'For colNum = 1 To lCol
+'    If Columns(colNum).ColumnWidth > 18 Then
+'        Columns(colNum).ColumnWidth = 18
+'    End If
+'Next colNum
+
+End Sub
