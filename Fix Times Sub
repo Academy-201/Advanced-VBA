@@ -1,0 +1,22 @@
+Public Sub fixTimes()
+Dim lCol As Long
+'Dim colNum As Long
+Dim colRng As Range
+Dim cell As Variant
+
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+Set colRng = Range(Cells(1, 1), Cells(1, lCol))
+
+For Each cell In colRng
+    If cell Like "*Time*" Or cell Like "*time*" Then
+        cell.EntireColumn.NumberFormat = "hh:mm"
+    End If
+Next cell
+
+'For colNum = 1 To lCol
+'    If Cells(1, colNum).Value Like "*Time*" Or Cells(1, colNum).Value Like "*time*" Then
+'        Columns(colNum).NumberFormat = "hh:mm"
+'    End If
+'Next colNum
+
+End Sub
