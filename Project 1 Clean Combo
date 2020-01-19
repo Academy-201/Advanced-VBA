@@ -1,1 +1,148 @@
+Option Explicit
 
+Public Sub fixDates()
+Dim lCol As Long
+'Dim colNum As Long
+Dim colRng As Range
+Dim cell As Variant
+
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+Set colRng = Range(Cells(1, 1), Cells(1, lCol))
+
+For Each cell In colRng
+    If cell Like "*Date*" Or cell Like "*date*" Then
+        cell.EntireColumn.NumberFormat = "mm/dd/yyyy"
+    End If
+Next cell
+
+'For colNum = 1 To lCol
+'    If Cells(1, colNum).Value Like "*Date*" Or Cells(1, colNum).Value Like "*date*" Then
+'        Columns(colNum).NumberFormat = "mm/dd/yyyy"
+'    End If
+'Next colNum
+
+End Sub
+
+Public Sub fixTimes()
+Dim lCol As Long
+'Dim colNum As Long
+Dim colRng As Range
+Dim cell As Variant
+
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+Set colRng = Range(Cells(1, 1), Cells(1, lCol))
+
+For Each cell In colRng
+    If cell Like "*Time*" Or cell Like "*time*" Then
+        cell.EntireColumn.NumberFormat = "hh:mm"
+    End If
+Next cell
+
+'For colNum = 1 To lCol
+'    If Cells(1, colNum).Value Like "*Time*" Or Cells(1, colNum).Value Like "*time*" Then
+'        Columns(colNum).NumberFormat = "hh:mm"
+'    End If
+'Next colNum
+
+End Sub
+
+
+Public Sub fixDatesComplex()
+Dim lCol As Long
+'Dim colNum As Long
+'Dim header As String
+'Dim headerArr As Variant
+Dim isInArray As Boolean
+'Dim arrNum As Long
+
+Dim outerHeader As Variant
+Dim innerHeader As Variant
+Dim headerArr1 As Variant
+Dim headerArr2 As Range
+
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+headerArr1 = Array("dat", "purchdt", "holiday", "vacastart", "vacaend")
+Set headerArr2 = Range(Cells(1, 1), Cells(1, lCol))
+
+'For colNum = 1 To lCol
+For Each outerHeader In headerArr2
+    isInArray = False
+    'header = Cells(1, colNum).Value
+    For Each innerHeader In headerArr1
+        If InStr(LCase(outerHeader), innerHeader) Then
+            isInArray = True
+            Exit For
+        End If
+    Next innerHeader
+    
+'    For arrNum = LBound(headerArr) To UBound(headerArr)
+'        'If headerArr(arrNum) = header Then
+'        If InStr(LCase(header), headerArr(arrNum)) Then
+'            isInArray = True
+'            Exit For
+'        End If
+'    Next arrNum
+    
+    If isInArray = True Then
+        outerHeader.EntireColumn.NumberFormat = "mm/dd/yyyy"
+    End If
+Next outerHeader
+
+End Sub
+
+Public Sub fixColWidth()
+Dim lCol As Long
+'Dim colNum As Long
+Dim colRng As Range
+Dim cell As Variant
+
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+Cells.EntireColumn.AutoFit
+Set colRng = Range(Cells(1, 1), Cells(1, lCol))
+
+For Each cell In colRng
+    If cell.ColumnWidth > 18 Then
+        cell.EntireColumn.ColumnWidth = 18
+    End If
+Next cell
+'For colNum = 1 To lCol
+'    If Columns(colNum).ColumnWidth > 18 Then
+'        Columns(colNum).ColumnWidth = 18
+'    End If
+'Next colNum
+
+End Sub
+
+Public Sub removeEmptyColumns()
+Dim lCol As Long
+Dim lRow As Long
+Dim colNum As Long
+Dim rowNum As Long
+Dim anyData As Boolean
+
+lRow = Cells(Rows.Count, "A").End(xlUp).Row
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+
+For colNum = lCol To 1 Step -1
+    If Cells(1, colNum).Value = "" Then
+        anyData = False
+        For rowNum = 1 To lRow
+            If Cells(rowNum, colNum).Value <> "" Then
+                anyData = True
+                Exit For
+            End If
+        Next rowNum
+        If anyData = False Then
+            Columns(colNum).EntireColumn.Delete
+        End If
+    End If
+Next colNum
+
+End Sub
+
+Public Sub cleanCombo()
+fixDates
+fixTimes
+fixColWidth
+removeEmptyColumns
+End Sub
