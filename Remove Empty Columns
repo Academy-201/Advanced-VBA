@@ -1,0 +1,26 @@
+Public Sub removeEmptyColumns()
+Dim lCol As Long
+Dim lRow As Long
+Dim colNum As Long
+Dim rowNum As Long
+Dim anyData As Boolean
+
+lRow = Cells(Rows.Count, "A").End(xlUp).Row
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+
+For colNum = lCol To 1 Step -1
+    If Cells(1, colNum).Value = "" Then
+        anyData = False
+        For rowNum = 1 To lRow
+            If Cells(rowNum, colNum).Value <> "" Then
+                anyData = True
+                Exit For
+            End If
+        Next rowNum
+        If anyData = False Then
+            Columns(colNum).EntireColumn.Delete
+        End If
+    End If
+Next colNum
+
+End Sub
