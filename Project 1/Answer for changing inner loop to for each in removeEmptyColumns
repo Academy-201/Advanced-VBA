@@ -1,0 +1,42 @@
+'**Below is my solution to this challenge. I have converted the inner for loop to a for each loop. **
+Public Sub removeEmptyColumns()
+Dim lCol As Long
+Dim lRow As Long
+Dim colNum As Long
+'**This variable is not longer need. **
+'Dim rowNum As Long
+Dim anyData As Boolean
+
+'** This are our new variables. **
+Dim rowRng As Range
+Dim cell As Variant
+
+lRow = Cells(Rows.Count, "A").End(xlUp).Row
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+
+For colNum = lCol To 1 Step -1
+    If Cells(1, colNum).Value = "" Then
+        anyData = False
+        '**The range of cells will have be calculated each time we find an empty header cell. **
+        Set rowRng = Range(Cells(1, colNum), Cells(lRow, colNum))
+        '**This is our new for each loop. **
+        For Each cell In rowRng
+            If cell <> "" Then
+                 anyData = True
+                Exit For
+            End If
+        Next cell
+        
+'        For rowNum = 1 To lRow
+'            If Cells(rowNum, colNum).Value <> "" Then
+'                anyData = True
+'                Exit For
+'            End If
+'        Next rowNum
+        If anyData = False Then
+            Columns(colNum).EntireColumn.Delete
+        End If
+    End If
+Next colNum
+
+End Sub
