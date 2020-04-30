@@ -1,0 +1,93 @@
+'Extra practice change the subroutines to functions and the for each loops to for loops
+
+‘Function with for loop conversation and a single space.
+
+Public Function specialConcatValuesOnly2(concatColRng As Range) As String
+Dim lRow As Long
+Dim lCol As Long
+Dim concatStr As String
+Dim concatValue As Long
+Dim concatCol As Long
+
+concatCol = concatColRng.Column
+
+lRow = Cells(Rows.Count, concatCol).End(xlUp).Row
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+
+concatStr = ""
+For concatValue = 2 To lRow
+    concatStr = concatStr & Cells(concatValue, concatCol).Value & " "
+Next concatValue
+
+specialConcatValuesOnly2 = Left(concatStr, (Len(concatStr) - 1))
+
+End Function
+
+‘Function with for loop conversation and a comma.
+
+Public Function specialConcatCommas3(concatColRng As Range) As String
+Dim lRow As Long
+Dim lCol As Long
+Dim concatStr As String
+Dim concatValue As Long
+Dim concatCol As Long
+
+concatCol = concatColRng.Column
+
+lRow = Cells(Rows.Count, concatCol).End(xlUp).Row
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+
+concatStr = ""
+For concatValue = 2 To lRow
+    concatStr = concatStr & Cells(concatValue, concatCol).Value & ", "
+Next concatValue
+
+specialConcatCommas3 = Left(concatStr, (Len(concatStr) - 2))
+
+End Function
+
+‘Function with for loop conversation and a single quote.
+
+Public Function specialConcatSingleQuotes2(concatColRng As Range) As String
+Dim lRow As Long
+Dim lCol As Long
+Dim concatStr As String
+Dim concatValue As Long
+Dim concatCol As Long
+
+concatCol = concatColRng.Column
+
+lRow = Cells(Rows.Count, concatCol).End(xlUp).Row
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+
+concatStr = ""
+For concatValue = 2 To lRow
+    concatStr = concatStr & Chr(39) & Cells(concatValue, concatCol).Value & Chr(39) & ", "
+Next concatValue
+
+specialConcatSingleQuotes2 = Left(concatStr, (Len(concatStr) - 2))
+
+End Function
+
+‘Function with for loop conversation and a double quote.
+
+Public Function specialConcatDoubleQuotes2(concatColRng As Range) As String
+Dim lRow As Long
+Dim lCol As Long
+Dim concatStr As String
+Dim concatValue As Long
+Dim concatCol As Long
+
+concatCol = concatColRng.Column
+
+lRow = Cells(Rows.Count, concatCol).End(xlUp).Row
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+
+concatStr = ""
+For concatValue = 2 To lRow
+    concatStr = concatStr & Chr(34) & Cells(concatValue, concatCol).Value & Chr(34) & ", "
+Next concatValue
+
+specialConcatDoubleQuotes2 = Left(concatStr, (Len(concatStr) - 2))
+
+End Function
