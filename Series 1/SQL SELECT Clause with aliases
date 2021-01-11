@@ -1,0 +1,75 @@
+Public Sub SQLselectJoin1()
+Dim lRow1 As Long
+Dim lRow2 As Long
+Dim lCol As Long
+Dim SQLlist As String
+Dim aliasVal1 As String
+Dim aliasVal2 As String
+Dim selectVal As Long
+
+lRow1 = Cells(Rows.Count, "A").End(xlUp).Row
+lRow2 = Cells(Rows.Count, "B").End(xlUp).Row
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+
+aliasVal1 = Range("C2").Value
+aliasVal2 = Range("C3").Value
+
+SQLlist = ""
+
+For selectVal = 2 To lRow1
+    SQLlist = SQLlist & aliasVal1 & "." & Cells(selectVal, 1).Value & ", "
+Next selectVal
+
+For selectVal = 2 To lRow2
+    SQLlist = SQLlist & aliasVal2 & "." & Cells(selectVal, 2).Value & ", "
+Next selectVal
+
+SQLlist = Left(SQLlist, (Len(SQLlist) - 2))
+
+SQLlist = "SELECT " & SQLlist
+
+Cells(1, lCol + 1).Value = SQLlist
+
+End Sub
+
+
+Public Sub SQLselectJoin2()
+Dim lRow1 As Long
+Dim lRow2 As Long
+Dim lCol As Long
+Dim SQLlist As String
+Dim aliasVal1 As String
+Dim aliasVal2 As String
+Dim selectVal As Long
+Dim innerColor As Long
+
+lRow1 = Cells(Rows.Count, "A").End(xlUp).Row
+lRow2 = Cells(Rows.Count, "B").End(xlUp).Row
+lCol = Cells(1, Columns.Count).End(xlToLeft).Column
+
+aliasVal1 = Range("C2").Value
+aliasVal2 = Range("C3").Value
+
+SQLlist = ""
+
+innerColor = Range("A1").Interior.Color
+
+For selectVal = 2 To lRow1
+    If Cells(selectVal, 1).Interior.Color <> innerColor Then
+        SQLlist = SQLlist & aliasVal1 & "." & Cells(selectVal, 1).Value & ", "
+    End If
+Next selectVal
+
+For selectVal = 2 To lRow2
+    If Cells(selectVal, 2).Interior.Color <> innerColor Then
+        SQLlist = SQLlist & aliasVal2 & "." & Cells(selectVal, 2).Value & ", "
+    End If
+Next selectVal
+
+SQLlist = Left(SQLlist, (Len(SQLlist) - 2))
+
+SQLlist = "SELECT " & SQLlist
+
+Cells(1, lCol + 1).Value = SQLlist
+
+End Sub
