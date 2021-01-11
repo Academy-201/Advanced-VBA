@@ -1,0 +1,99 @@
+Public Function specialConcatCommaMod(whereClause As Range) As String
+Dim lRow As Long
+Dim concatStr As String
+Dim concatRng As Range
+Dim concatValue As Variant
+Dim concatCol As Long
+
+concatCol = whereClause.Column
+
+lRow = Cells(Rows.Count, concatCol).End(xlUp).Row
+Set concatRng = Range(Cells(2, concatCol), Cells(lRow, concatCol))
+
+concatStr = ""
+
+For Each concatValue In concatRng
+    concatStr = concatStr & Chr(39) & concatValue & Chr(39) & ", "
+Next concatValue
+
+concatStr = Left(concatStr, (Len(concatStr) - 2))
+
+specialConcatCommaMod = concatStr
+
+End Function
+
+
+Public Function SQLselectMod(firstTabCol As Long, secondTabCol As Long, aliasCol As Long) As String
+
+Dim lRow1 As Long
+Dim lRow2 As Long
+Dim concatStr As String
+Dim aliasVal1 As String
+Dim aliasVal2 As String
+Dim selectVal As Long
+Dim innerColor As Long
+
+lRow1 = Cells(Rows.Count, firstTabCol).End(xlUp).Row
+lRow2 = Cells(Rows.Count, secondTabCol).End(xlUp).Row
+
+aliasVal1 = Cells(2, aliasCol).Value
+aliasVal2 = Cells(3, aliasCol).Value
+
+concatStr = ""
+
+innerColor = Range("A1").Interior.Color
+
+For selectVal = 2 To lRow1
+    If Cells(selectVal, firstTabCol).Interior.Color <> innerColor Then
+        concatStr = concatStr & aliasVal1 & "." & Cells(selectVal, firstTabCol).Value & ", "
+    End If
+Next selectVal
+
+For selectVal = 2 To lRow2
+    If Cells(selectVal, secondTabCol).Interior.Color <> innerColor Then
+        concatStr = concatStr & aliasVal2 & "." & Cells(selectVal, secondTabCol).Value & ", "
+    End If
+Next selectVal
+
+concatStr = Left(concatStr, (Len(concatStr) - 2))
+concatStr = "SELECT " & concatStr
+
+SQLselectMod = concatStr
+
+End Function
+
+
+Public Function SQLFullStatementMod(firstTab As Range, secondTab As Range, aliasVal As Range, joinVal As Range, whereClause As Range) As String
+Dim SQLlist As String
+Dim concatModString1 As String
+Dim concatModString2 As String
+Dim aliasVal1 As String
+Dim aliasVal2 As String
+
+Dim firstTabCol As Long
+Dim secondTabCol As Long
+Dim aliasCol As Long
+Dim joinCol As Long
+Dim whereCol As Long
+
+firstTabCol = firstTab.Column
+secondTabCol = secondTab.Column
+aliasCol = aliasVal.Column
+joinCol = joinVal.Column
+whereCol = whereClause.Column
+
+concatModString1 = SQLselectMod(firstTabCol, secondTabCol, aliasCol)
+
+concatModString2 = specialConcatCommaMod(whereClause)
+
+aliasVal1 = Cells(2, aliasCol).Value
+aliasVal2 = Cells(3, aliasCol).Value
+
+SQLlist = ""
+SQLlist = "WHERE " & aliasVal1 & "." & Cells(1, whereCol).Value & " IN (" & concatModString2 & ")"
+
+SQLFullStatementMod = concatModString1 & " FROM " & Cells(1, firstTabCol).Value & " " & aliasVal1 & " INNER JOIN " & Cells(1, secondTabCol).Value & " " & aliasVal2 _
+    & " ON " & aliasVal1 & "." & Cells(2, joinCol).Value & " = " & aliasVal2 & "." & Cells(3, joinCol).Value & " " & SQLlist
+
+End Function
+
